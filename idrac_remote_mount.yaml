@@ -1,0 +1,44 @@
+---
+- name: Mount ISO and configure iDRAC9 to boot from it using OpenManage
+  hosts: localhost  # We are running this on the local machine
+  gather_facts: no
+  vars:
+    # Common credentials for all iDRACs
+    idrac_user: "root"
+    idrac_password: "calvin" 
+    iso_url: "http://<some_webserver>/agent.x86_64.iso"  # URL of the ISO to mount
+    boot_device: "cd"  # Boot from ISO (CD/DVD)
+  vars_files:
+    - vars.yaml
+
+  tasks:
+    - name: Mount ISO file to iDRAC virtual media
+      dellemc.openmanage.idrac_virtual_media:
+        validate_certs: false
+        idrac_ip: "{{ host.idrac }}"
+        idrac_user: "{{ idrac_user }}"
+        idrac_password: "{{ idrac_password }}"
+        virtual_media:
+          - index: 1
+            insert: true
+            image: "{{ iso_url }}"
+      loop: "{{ hosts }}"
+      loop_control:
+        loop_var: host
+      register: mount_result
+
+    - name: Set iDRAC9 to boot from virtual media (CD/DVD)
+      dellemc.openmanage.idrac_boot:
+        validate_certs: false
+        idrac_ip: "{{ host.idrac }}"
+        idrac_user: "{{ idrac_user }}"
+        idrac_password: "{{ idrac_password }}"
+        reset_type: force_restart
+        boot_source_override_target: "{{ boot_device }}"
+        boot_source_override_enabled: once
+        job_wait: false
+      loop: "{{ hosts }}"
+      loop_control:
+        loop_var: host
+      tags: 
+        - mount

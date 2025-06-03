@@ -1,0 +1,50 @@
+apiVersion: v1beta1
+kind: AgentConfig
+metadata:
+  name: "{{ cluster_name }}"
+rendezvousIP: "{{ rendez_vous_IP }}"
+
+hosts:
+{% for host in hosts %}
+  - hostname: "{{ host.name }}"
+    role: "{{ host.role }}"
+    interfaces:
+      - name: ens1f0
+        macAddress: "{{ host.mac }}"
+    rootDeviceHints:
+      deviceName: "{{ global_device_hint }}"
+    networkConfig:
+      interfaces:
+        - name: "ens1f0"
+          ipv4:
+            enabled: false
+            dhcp: false
+        - name: "eno1"
+          ipv4:
+            enabled: false
+            dhcp: false
+        - name: "ens1f0.{{ vlan }}"
+          type: vlan
+          state: up
+          vlan:
+            base-iface: ens1f0
+            id: {{ vlan }}
+          mac-address: "{{ host.mac }}"
+          ipv4:
+            address:
+              - ip: "{{ host.ip }}"
+                prefix-length: 24
+            enabled: true
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - "{{ dns }}"
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: "{{ gateway }}"
+            next-hop-interface: "ens1f0.{{ vlan }}"
+            table-id: 254
+{% endfor %}
+

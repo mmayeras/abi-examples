@@ -1,0 +1,60 @@
+#Hosts list and vars
+cluster_name: "abi"
+vlan: 530
+dns: "10.0.0.250"
+gateway: "10.0.0.254"
+rendez_vous_IP: 10.0.0.1
+global_device_hint: /dev/sda
+apiVIPs:
+    - 10.0.0.50
+ingressVIPs:
+    - 10.0.0.51
+base_domain: example.com
+ssh_key: "ssh-ed25519 xxxxxxxxxx"
+pull_secret: '{"auths":{"cloud.openshift.com":{"auth":"xxxxx==","email":"mail@example.com"},"quay.io":{"auth":"xxxx==","email":"mail@example.com"},"registry.connect.redhat.com":{"auth":"xxxx==","email":"mail@example.com"},"registry.redhat.io":{"auth":"xxxx==","email":"mail@example.com"}}}'
+
+hosts:
+  - name: master-0.abi.example.com
+    ip: 10.0.0.1
+    idrac: 10.1.0.1
+    mac: AA:BB:CC:DD:EE:FF
+    role: master
+    bare_metal_host: idrac-master1.example.com
+    #device_hint: "/dev/disk/by-path/pci-0000:18:00.0-scsi-0:2:0:0" 
+  - name: master-1.abi.example.com
+    ip: 10.0.0.2
+    idrac: 10.1.0.2
+    mac: AA:BB:CC:DD:EE:FF
+    role: master
+    bare_metal_host: idrac-master2.example.com
+    #device_hint: "/dev/disk/by-path/pci-0000:18:00.0-scsi-0:2:0:0" 
+  - name: master-3.abi.example.com
+    ip: 10.0.0.3
+    idrac: 10.1.0.3
+    mac: AA:BB:CC:DD:EE:FF
+    role: master
+    bare_metal_host: idrac-master3.example.com
+    #device_hint: "/dev/disk/by-path/pci-0000:18:00.0-scsi-0:2:0:0" 
+  - name: worker-0.abi.example.com
+    ip: 10.0.0.4
+    idrac: 10.1.0.4
+    mac: AA:BB:CC:DD:EE:FF
+    role: worker
+    bare_metal_host: idrac-worker0.example.com
+    device_hint: "/dev/disk/by-path/pci-0000:18:00.0-scsi-0:2:0:0" 
+  - name: worker-1.abi.example.com
+    ip: 10.0.0.5
+    idrac: 10.1.0.5
+    mac: AA:BB:CC:DD:EE:FF
+    role: worker
+    bare_metal_host: idrac-worker1.example.com
+    device_hint: "/dev/disk/by-path/pci-0000:18:00.0-scsi-0:2:0:0" 
+  - name: worker-2.abi.example.com
+    ip: 10.0.0.6
+    idrac: 10.1.0.6
+    mac: AA:BB:CC:DD:EE:FF
+    role: worker
+    bare_metal_host: idrac-worker2.example.com
+    device_hint: "/dev/disk/by-path/pci-0000:18:00.0-scsi-0:2:0:0" 
+  
+  

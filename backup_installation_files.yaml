@@ -1,0 +1,18 @@
+---
+- name: Backup files
+  hosts: localhost  # The playbook is run on the local machine
+  gather_facts: no
+  tasks:
+    # Backup the install-config.yaml locally
+    - name: Backup install-config.yaml locally
+      ansible.builtin.copy:
+        src: install-config.yaml  
+        dest: install-config.yaml.bak 
+        backup: yes 
+
+    # Backup the agent-config.yaml locally
+    - name: Backup agent-config.yaml locally
+      ansible.builtin.copy:
+        src: agent-config.yaml 
+        dest: agent-config.yaml.bak 
+        backup: yes 

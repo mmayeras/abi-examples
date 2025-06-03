@@ -1,0 +1,11 @@
+---
+- name: Generate YAML from Jinja Template
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars.yaml
+  tasks:
+    - name: Render YAML file from template
+      ansible.builtin.template:
+        src: "install-config.yaml.j2"  # Path to your Jinja template
+        dest: "install-config.yaml"  # Output YAML file destination

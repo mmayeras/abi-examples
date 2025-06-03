@@ -1,0 +1,8 @@
+---
+- name: SCP file to remote system using SCP command
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Copy file using SCP command
+      ansible.builtin.shell: |
+        scp ./install/agent.x86_64.iso root@<web_server>:/var/www/html/agent.x86_64.iso
